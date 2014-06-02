@@ -46,13 +46,17 @@ bool FileHelper::isSignChar(char c) const
 
 int FileHelper::registerFile(const File &file)
 {
+    registerMutex.lock();
     int id = m_freeFileID;
     m_files[id] = &file;
     m_freeFileID++;
+    registerMutex.unlock();
     return id;
 }
 
 void FileHelper::unregisterFile(const File &file)
 {
+    registerMutex.lock();
     m_files.erase(file.getID());
+    registerMutex.unlock();
 }

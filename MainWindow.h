@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QListWidgetItem>
+#include <QMutex>
 #include <map>
 #include "TokenGraph.h"
 #include "File.h"
@@ -25,6 +26,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void loadFiles(const std::vector<QString> &fileList, unsigned from, unsigned to);
+
 public slots:
     void addFiles();
     void findUniqies();
@@ -39,6 +42,13 @@ private:
     std::map<int, TokenGraph*> uniques;
     NeedlemanWunschAlgorithm nwa;
     Ui::MainWindow *ui;
+
+    // Loading files variables
+    QMutex loadMutex;
+    int maxFiles;
+    bool closeLoading;
+    int loadedFiles;
+    int processedFiles;
 };
 
 #endif // MAINWINDOW_H

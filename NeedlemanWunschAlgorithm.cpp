@@ -72,9 +72,9 @@ bool NeedlemanWunschAlgorithm::calculate(const File &file1, const File &file2)
     unsigned f2num = file2.getTokens().size();
 
     // Reset memory
-    for (unsigned x = 0; x < f1num + 1; ++x)
-        for (unsigned y = 0; y < f2num + 1; ++y)
-            m_tab[x][y] = Cell();
+    // for (unsigned x = 0; x < f1num + 1; ++x)
+    //     for (unsigned y = 0; y < f2num + 1; ++y)
+    //         m_tab[x][y] = Cell();
 
     // Calculate file 1 max score
     float maxScore = getMaximalScore(file1);

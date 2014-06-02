@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <QMutex>
 
 class File;
 
@@ -38,6 +39,7 @@ private:
     bool m_signChar[256];
     int m_freeFileID;
     std::map<int, const File*> m_files;
+    QMutex registerMutex;
 };
 
 #endif // FILEHELPER_H

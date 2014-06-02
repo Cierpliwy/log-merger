@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <queue>
 #include <QRegExp>
+#include <QtConcurrentRun>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -114,62 +115,128 @@ void MainWindow::updateTextEdit(const TokenGraph &graph, QTextEdit &textEdit)
 
 void MainWindow::addFiles()
 {
+    // Get list of all files to tokenize
     QString directoryPath = QFileDialog::getExistingDirectory();
     queue<QDir> m_dirs;
+    vector<QString> filePaths;
     if (directoryPath.size() > 0) m_dirs.push(QDir(directoryPath));
 
+    // Apply regexp for files.
     QRegExp regExp(ui->patternEdit->text());
     regExp.setPatternSyntax(QRegExp::Wildcard);
-    QProgressDialog progress("", "Cancel", 0, 100, this);
-    progress.setWindowTitle("Tokenizing files...");
+
+    // Small progress window to show when fetching files.
+    QProgressDialog progress("", "Cancel", 0, 0, this);
+    progress.setWindowTitle("Fetching files...");
     progress.setWindowModality(Qt::WindowModal);
-    progress.setValue(0);
     progress.show();
 
+    // While there is a folder to explore.
     while (!m_dirs.empty()) {
+
+        // Don't hang GUI thread
+        QApplication::processEvents();
+        if (progress.wasCanceled()) break;
+
+        // Get content of front directory
         QDir &dir = m_dirs.front();
         dir.setFilter(QDir::Files | QDir::AllDirs | QDir::NoDotAndDotDot | QDir::NoSymLinks);
         QFileInfoList list = dir.entryInfoList();
-        progress.setMaximum(list.size());
-        QTime timer;
-        timer.start();
 
+        // For every child
         for(int i = 0; i < list.size(); ++i) {
-            if (progress.wasCanceled()) {
-                break;
-            }
+            // If it's a directory, add it to queue
             if (list[i].isDir()) {
                 if (ui->recursiveCheckBox->isChecked())
                     m_dirs.push(QDir(list[i].absoluteFilePath()));
                 continue;
             }
+            // If it's not matching regexp, ignore it...
             if (!regExp.exactMatch(list[i].fileName())) continue;
-            if (timer.elapsed() > 100) {
-                progress.setValue(i);
-                progress.setLabelText(QString("Tokenizing: %1").arg(list[i].absoluteFilePath()));
-                timer.restart();
-            }
+
+            // Save path information
             QString filePath = list[i].absoluteFilePath();
-            File *file = new File(fh);
-            file->load(filePath.toStdString());
-            if (file->getSize() > 10000) {
-                delete file;
-                continue;
-            }
-            file->tokenize();
-            if (file->getTokens().size() == 0) {
-                delete file;
-                continue;
-            }
-            files[file->getID()] = file;
-            ui->fileListWidget->addItem(file->getName().c_str());
+            filePaths.push_back(filePath);
         }
-
         m_dirs.pop();
-        if (m_dirs.empty()) progress.setValue(list.size());
     }
+    progress.close();
 
-    ui->fileLabel->setText(QString("%1").arg(files.size()));
+    // Distribute tokenizing between threads
+    QProgressDialog progress2("", "Cancel", 0, filePaths.size(), this);
+    progress2.setWindowTitle("Tokenizing files...");
+    progress2.setWindowModality(Qt::WindowModal);
+    progress2.setValue(0);
+    progress2.show();
+    maxFiles = filePaths.size();
+    loadedFiles = 0;
+    processedFiles = 0;
+    closeLoading = false;
+
+    vector<QFuture<void>> futures;
+    if (filePaths.size() < 100) {
+        futures.push_back(QtConcurrent::run(this, &MainWindow::loadFiles,
+                                            filePaths, 0, filePaths.size()));
+    } else {
+        // Add more threads for more files.
+        unsigned p1 = filePaths.size() / 4;
+        unsigned p2 = filePaths.size() / 2;
+        unsigned p3 = filePaths.size() * 3 / 4;
+
+        futures.push_back(QtConcurrent::run(this, &MainWindow::loadFiles,
+                                            filePaths, 0, p1));
+        futures.push_back(QtConcurrent::run(this, &MainWindow::loadFiles,
+                                            filePaths, p1, p2));
+        futures.push_back(QtConcurrent::run(this, &MainWindow::loadFiles,
+                                            filePaths, p2, p3));
+        futures.push_back(QtConcurrent::run(this, &MainWindow::loadFiles,
+                                            filePaths, p3, filePaths.size()));
+    }
+    while(true) {
+        // If all futures are completed exit.
+        int i;
+        for (i = 0; i < futures.size(); ++i) {
+            if (!futures[i].isFinished()) break;
+        }
+        if (i == futures.size()) break;
+
+        QApplication::processEvents();
+        loadMutex.lock();
+        if (progress2.wasCanceled()) {
+            closeLoading = true;
+            progress2.close();
+        }
+        progress2.setValue(loadedFiles);
+        loadMutex.unlock();
+    }
+    progress2.setValue(loadedFiles);
+
+    // Update GUI
+    ui->fileLabel->setText(QString("%1").arg(processedFiles));
+}
+
+// Load file in one thread
+void MainWindow::loadFiles(const std::vector<QString> &fileList, unsigned from, unsigned to)
+{
+    for (unsigned i = from; i < to; ++i) {
+        File *file = new File(fh);
+        file->load(fileList[i].toStdString().c_str());
+        file->tokenize();
+        loadMutex.lock();
+        loadedFiles++;
+        if (file->getTokens().empty() ||
+            file->getSize() > 10000) delete file;
+        else {
+            files[file->getID()] = file;
+            processedFiles++;
+            //ui->fileListWidget->addItem(fileList[i]);
+        }
+        if (closeLoading) {
+            loadMutex.unlock();
+            break;
+        }
+        loadMutex.unlock();
+    }
 }
 
 void MainWindow::findUniqies()
