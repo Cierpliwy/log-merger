@@ -194,7 +194,7 @@ void MainWindow::addFiles()
     }
     while(true) {
         // If all futures are completed exit.
-        int i;
+        unsigned i;
         for (i = 0; i < futures.size(); ++i) {
             if (!futures[i].isFinished()) break;
         }
@@ -253,64 +253,146 @@ void MainWindow::findUniqies()
     progress.setValue(0);
     progress.show();
 
-    QTime timer, timer2;
-    timer.start();
-    timer2.start();
-
-    std::multimap<float, File*> map1, map2;
+    std::vector<const File*> fileVector;
     for(auto &f : files) {
-        map1.insert(pair<float,File*>(1,f.second));
+        fileVector.push_back(f.second);
     }
 
-    int uniquesNum = 0;
-    int heur = 0;
-    while(!map1.empty()) {
-        uniquesNum++;
-        if (timer.elapsed() > 10) {
-            progress.setValue(files.size()-map1.size());
-            timer.restart();
+    unsigned originalSize = fileVector.size();
+    passNumber = 0;
+    itemNumber = 0;
+    totalCalculations = 0;
+    usedHeuristicNumber = 0;
+    uniquesNumber = 0;
+    calculationCanceled = false;
+
+    while(!fileVector.empty()) {
+
+        // Update statistics
+        passNumber++;
+        itemNumber = 0;
+
+        // First element is a template file
+        // Create token graph for it
+        const File& templateFile = *fileVector[0];
+        TokenGraph *graph = new TokenGraph;
+
+        // Compare it with other files in a vector.
+        vector<QFuture<vector<const File*>>> results;
+
+        // Use one thread for small number of comparsions
+        if (fileVector.size() < 5) {
+             results.push_back(QtConcurrent::run(this, &MainWindow::calculateFiles,
+                                                 fileVector, 1, fileVector.size(),
+                                                 templateFile, graph));
+        } else {
+            // Use 4 threads to split a job
+            unsigned p1 = (fileVector.size() - 1) / 4;
+            unsigned p2 = (fileVector.size() - 1) / 2;
+            unsigned p3 = (fileVector.size() - 1) * 3 / 4;
+            results.push_back(QtConcurrent::run(this, &MainWindow::calculateFiles,
+                                                fileVector, 1, p1,
+                                                templateFile, graph));
+            results.push_back(QtConcurrent::run(this, &MainWindow::calculateFiles,
+                                                fileVector, p1, p2,
+                                                templateFile, graph));
+            results.push_back(QtConcurrent::run(this, &MainWindow::calculateFiles,
+                                                fileVector, p2, p3,
+                                                templateFile, graph));
+            results.push_back(QtConcurrent::run(this, &MainWindow::calculateFiles,
+                                                fileVector, p3, fileVector.size(),
+                                                templateFile, graph));
         }
-        if (progress.wasCanceled()) {
+
+        // Collect results
+        while(true) {
+            unsigned i;
+            for (i = 0; i < results.size(); ++i) {
+                if (!results[i].isFinished()) break;
+            }
+            if (i == results.size()) break;
+
+            calculateMutex.lock();
+            if (progress.wasCanceled()) {
+                calculationCanceled = true;
+                progress.close();
+            }
+            progress.setValue(originalSize - fileVector.size());
+            progress.setLabelText(QString("Total: %1, Pass nr %2: %3/%4. Found uniques: %5")
+                                         .arg(totalCalculations).arg(passNumber).arg(itemNumber)
+                                         .arg(fileVector.size()-1).arg(uniquesNumber));
+            calculateMutex.unlock();
+            QApplication::processEvents();
+        }
+
+        // Stop everything if calculation was cancelled
+        if (calculationCanceled) {
+            if (graph) delete graph;
             break;
         }
 
-        File* templateFile = map1.begin()->second;
-        TokenGraph *graph = new TokenGraph;
-
-        int i = 0;
-        for (auto &f : map1) {
-            progress.setLabelText(
-                        QString("Finding uniques: %1 (%2/%3)").
-                        arg(uniquesNum).arg(i).arg(map1.size()));
-
-            if (f.second != templateFile) {
-                if (ui->useHeuristicCheckBox->isChecked() &&
-                    !nwa.isWorthCalculating(*templateFile, *f.second,
-                                            ui->similaritySpinBox->value() / 100.0f)) {
-                    map2.insert(pair<float,File*>(nwa.getScore(), f.second));
-                    heur++;
-                } else {
-                    nwa.calculate(*templateFile, *f.second);
-                    if (nwa.getScore() > ui->similaritySpinBox->value() / 100.0f)
-                        nwa.updateTokenGraph(*graph);
-                    else
-                        map2.insert(pair<float,File*>(nwa.getScore(), f.second));
-                }
-            }
-            i++;
+        // Refresh vector
+        fileVector.clear();
+        for (unsigned i = 0; i < results.size(); ++i) {
+            vector<const File*> newFiles = results[i].result();
+            fileVector.insert(fileVector.end(), newFiles.begin(), newFiles.end());
         }
 
-        if (graph->empty()) nwa.prepareTokenGraph(*graph, *templateFile);
-
-        uniques[templateFile->getID()] = graph;
-        ui->uniquesList->addItem(templateFile->getName().c_str());
-
-        map1 = map2;
-        map2.clear();
+        // Add unique
+        uniquesNumber++;
+        if (graph->empty()) nwa.prepareTokenGraph(*graph, templateFile);
+        uniques[templateFile.getID()] = graph;
+        ui->uniquesList->addItem(templateFile.getName().c_str());
     }
+
     progress.setValue(files.size());
     ui->uniqueLabel->setText(QString("%1").arg(uniques.size()));
-    qDebug() << "Total time" << timer2.elapsed() << " ms, Heur: " << heur;
+}
+
+std::vector<const File*> MainWindow::calculateFiles(const std::vector<const File*> &fileList,
+                                unsigned from,
+                                unsigned to,
+                                const File &templateFile,
+                                TokenGraph *tokenGraph)
+{
+    bool useHeuristics = false;
+    float similarity = 0.95;
+    vector<const File*> results;
+
+    calculateMutex.lock();
+    similarity = ui->similaritySpinBox->value() / 100.0f;
+    useHeuristics = ui->useHeuristicCheckBox->isChecked();
+    NeedlemanWunschAlgorithm myNWA = nwa;
+    calculateMutex.unlock();
+
+    for (unsigned i = from; i < to; ++i) {
+        if (useHeuristics && !myNWA.isWorthCalculating(templateFile, *fileList[i], similarity)) {
+            results.push_back(fileList[i]);
+            calculateMutex.lock();
+            usedHeuristicNumber++;
+            calculateMutex.unlock();
+        } else {
+            myNWA.calculate(templateFile, *fileList[i]);
+            if (myNWA.getScore() > similarity) {
+                calculateMutex.lock();
+                myNWA.updateTokenGraph(*tokenGraph);
+                calculateMutex.unlock();
+            } else {
+                results.push_back(fileList[i]);
+            }
+        }
+
+        calculateMutex.lock();
+        itemNumber++;
+        totalCalculations++;
+        if (calculationCanceled) {
+            calculateMutex.unlock();
+            break;
+        }
+        calculateMutex.unlock();
+    }
+
+    return results;
 }
 
 void MainWindow::previewUnique(QListWidgetItem *item)
@@ -342,4 +424,6 @@ void MainWindow::clearAll()
     uniques.clear();
     ui->fileListWidget->clear();
     ui->uniquesList->clear();
+    ui->fileLabel->setText("0");
+    ui->previewEdit->clear();
 }

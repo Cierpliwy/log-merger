@@ -27,6 +27,11 @@ public:
     ~MainWindow();
 
     void loadFiles(const std::vector<QString> &fileList, unsigned from, unsigned to);
+    std::vector<const File *> calculateFiles(const std::vector<const File*> &fileList,
+                                              unsigned from,
+                                              unsigned to,
+                                              const File &templateFile,
+                                              TokenGraph *tokenGraph);
 
 public slots:
     void addFiles();
@@ -49,6 +54,15 @@ private:
     bool closeLoading;
     int loadedFiles;
     int processedFiles;
+
+    // Calculating variables
+    QMutex calculateMutex;
+    int passNumber;
+    int itemNumber;
+    int totalCalculations;
+    int usedHeuristicNumber;
+    int uniquesNumber;
+    bool calculationCanceled;
 };
 
 #endif // MAINWINDOW_H

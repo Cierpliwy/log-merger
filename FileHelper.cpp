@@ -14,7 +14,9 @@ FileHelper::FileHelper()
 
 long FileHelper::getUniqueID(const std::string &str)
 {
+    registerMutex.lock();
     pair<set<string>::iterator,bool> it = m_strings.insert(str);
+    registerMutex.unlock();
     return reinterpret_cast<long>(&(*it.first)[0]);
 }
 

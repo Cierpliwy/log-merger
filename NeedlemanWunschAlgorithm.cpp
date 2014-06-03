@@ -23,6 +23,7 @@ NeedlemanWunschAlgorithm::NeedlemanWunschAlgorithm() :
 
 NeedlemanWunschAlgorithm::~NeedlemanWunschAlgorithm()
 {
+    free();
 }
 
 void NeedlemanWunschAlgorithm::free()
