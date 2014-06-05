@@ -1,19 +1,11 @@
 #include "NeedlemanWunschAlgorithm.h"
 #include "FileHelper.h"
+#include <cmath>
+#include <QDebug>
+using namespace std;
 
-NeedlemanWunschAlgorithm::NeedlemanWunschAlgorithm() :
-    m_correctScore{{ 1,-1, -5,-3, -20},
-                   {-1, 2, -3,-2, -20},
-                   {-5,-3,  5,-2, -20},
-                   {-3,-2, -2, 3, -20},
-                  {-20,-20,-20,-20,20}},
-    m_incorrectScore{{ 0,-1, -5,-3, -20},
-                     {-1, 0, -3,-2, -20},
-                     {-5,-3,  -5,-2, -20},
-                     {-3,-2, -2, 0, -20},
-                    {-20,-20,-20,-20,20}}
+NeedlemanWunschAlgorithm::NeedlemanWunschAlgorithm()
 {
-    m_skipScore = -1;
     m_score = 0;
     m_tab = nullptr;
     m_tabSize = 0;
@@ -41,7 +33,7 @@ float NeedlemanWunschAlgorithm::getMaximalScore(const File &file)
     float maxScore = 0;
     for (unsigned i = 0; i < file.getTokens().size(); ++i) {
         int tokenNum = file[i].type;
-        maxScore += m_correctScore[tokenNum][tokenNum];
+        maxScore += m_settings.equalMatrix[tokenNum][tokenNum];
     }
     return maxScore;
 }
@@ -81,42 +73,56 @@ bool NeedlemanWunschAlgorithm::calculate(const File &file1, const File &file2)
     float maxScore = getMaximalScore(file1);
 
     // Starting penalty
-    for (unsigned x = 0; x < f1num + 1; ++x)
-        m_tab[x][0] = Cell(m_skipScore*x, -1, 0);
-    for (unsigned y = 0; y < f2num + 1; ++y)
-        m_tab[0][y] = Cell(m_skipScore*y, 0, -1);
+    for (int x = 0; x < f1num + 1; ++x) {
+        int lastPenalty = min(m_settings.basePenalty + x*m_settings.penaltyReduction, m_settings.minPenalty);
+        m_tab[x][0] = Cell(lastPenalty, lastPenalty, -1, 0);
+    }
+    for (int y = 0; y < f2num + 1; ++y) {
+        int lastPenalty = min(m_settings.basePenalty + y*m_settings.penaltyReduction, m_settings.minPenalty);
+        m_tab[0][y] = Cell(lastPenalty, lastPenalty, 0, -1);
+    }
 
     // Calculate each remaining cell
-    int dx, dy, cellCost;
+    int dx, dy, cellCost, cellLastPenalty;
 
     for (unsigned x = 1; x < f1num + 1; ++x) {
         for (unsigned y = 1; y < f2num + 1; ++y) {
-            int tmpCost = m_tab[x][y-1].score + m_skipScore;
+            int lastPenalty = min(m_tab[x][y-1].lastPenalty + m_settings.penaltyReduction, m_settings.minPenalty);
+            int tmpCost = m_tab[x][y-1].score + lastPenalty;
             dx = 0;
             dy = -1;
             cellCost = tmpCost;
+            cellLastPenalty = lastPenalty;
+            lastPenalty = min(m_tab[x-1][y].lastPenalty + m_settings.penaltyReduction, m_settings.minPenalty);
+            tmpCost = m_tab[x-1][y].score + lastPenalty;
 
-            tmpCost = m_tab[x-1][y].score + m_skipScore;
             if (tmpCost > cellCost) {
                 dx = -1;
                 dy = 0;
                 cellCost = tmpCost;
+                cellLastPenalty = lastPenalty;
             }
 
             if (file1[x-1] == file2[y-1])
                 tmpCost = m_tab[x-1][y-1].score +
-                          m_correctScore[file1[x-1].type][file2[y-1].type];
-            else
-                tmpCost = m_tab[x-1][y-1].score +
-                          m_incorrectScore[file1[x-1].type][file2[y-1].type];
+                          m_settings.equalMatrix[file1[x-1].type][file2[y-1].type];
+            else {
+                if (file1[x-1].type != file2[y-1].type)
+                    tmpCost = m_tab[x-1][y-1].score +
+                              m_settings.equalMatrix[file1[x-1].type][file2[y-1].type];
+                else
+                    tmpCost = m_tab[x-1][y-1].score +
+                              m_settings.unequalVector[file1[x-1].type];
+            }
 
             if (tmpCost > cellCost) {
                 dx = -1;
                 dy = -1;
                 cellCost = tmpCost;
+                cellLastPenalty = m_settings.basePenalty - m_settings.penaltyReduction;
             }
 
-            m_tab[x][y] = Cell(cellCost, dx, dy);
+            m_tab[x][y] = Cell(cellCost, cellLastPenalty, dx, dy);
         }
     }
 
@@ -237,7 +243,13 @@ bool NeedlemanWunschAlgorithm::isWorthCalculating(const File &file1,
     int diffTokens = std::abs(static_cast<int>(file1.getTokens().size()) -
                               static_cast<int>(file2.getTokens().size()));
 
-    if (maxFile1Score + diffTokens*m_skipScore < maxFile1Score*similarity)
+    int penalty = 0;
+    for (int i = 0; i < diffTokens; ++i) {
+        penalty += min(m_settings.basePenalty + i*m_settings.penaltyReduction,
+                       m_settings.minPenalty);
+    }
+
+    if (maxFile1Score + penalty < maxFile1Score*similarity)
         return false;
     return true;
 }

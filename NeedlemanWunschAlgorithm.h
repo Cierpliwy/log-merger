@@ -2,6 +2,7 @@
 #define NEEDLEMANWUNSCHALGORITHM_H
 #include "TokenGraph.h"
 #include "File.h"
+#include "NWASettings.h"
 
 class NeedlemanWunschAlgorithm
 {
@@ -15,6 +16,10 @@ public:
     bool isWorthCalculating(const File& file1, const File& file2,
                             float similarity);
 
+    void setSettings(const NWASettings &settings) {
+        m_settings = settings;
+    }
+
     float getScore() const {
         return m_score;
     }
@@ -27,11 +32,12 @@ private:
     float getMaximalScore(const File& file);
 
     struct Cell {
-        Cell() : score(0), dx(0), dy(0) {}
-        Cell(int score, int dx, int dy) :
-            score(score), dx(dx), dy(dy) {}
+        Cell() : score(0), lastPenalty(0), dx(0), dy(0) {}
+        Cell(int score, int lastPenalty, int dx, int dy) :
+            score(score), lastPenalty(lastPenalty), dx(dx), dy(dy) {}
 
         int score;
+        int lastPenalty;
         int dx;
         int dy;
     };
@@ -40,9 +46,7 @@ private:
     unsigned m_tabSize;
     const File *m_file1, *m_file2;
     float m_score;
-    int m_correctScore[Token::TOKEN_NUM][Token::TOKEN_NUM];
-    int m_incorrectScore[Token::TOKEN_NUM][Token::TOKEN_NUM];
-    int m_skipScore;
+    NWASettings m_settings;
 };
 
 #endif // NEEDLEMANWUNSCHALGORITHM_H

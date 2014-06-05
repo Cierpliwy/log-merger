@@ -40,11 +40,96 @@ MainWindow::MainWindow(QWidget *parent) :
     fh.addKeyword("Call");
     fh.addKeyword("Code");
 
+    // Add default settings
+    NWASettings defaultSettings;
+    defaultSettings.equalMatrix[Token::NUMBER][Token::NUMBER] = 100;
+    defaultSettings.unequalVector[Token::NUMBER] = 0;
+    defaultSettings.equalMatrix[Token::NUMBER][Token::STRING] = -100;
+    defaultSettings.equalMatrix[Token::NUMBER][Token::KEYWORD] = -500;
+    defaultSettings.equalMatrix[Token::NUMBER][Token::SIGN] = -300;
+    defaultSettings.equalMatrix[Token::NUMBER][Token::NEW_LINE] = -2000;
+
+    defaultSettings.equalMatrix[Token::STRING][Token::NUMBER] = -100;
+    defaultSettings.equalMatrix[Token::STRING][Token::STRING] = 200;
+    defaultSettings.unequalVector[Token::STRING] = 0;
+    defaultSettings.equalMatrix[Token::STRING][Token::KEYWORD] = -300;
+    defaultSettings.equalMatrix[Token::STRING][Token::SIGN] = -200;
+    defaultSettings.equalMatrix[Token::STRING][Token::NEW_LINE] = -2000;
+
+    defaultSettings.equalMatrix[Token::KEYWORD][Token::NUMBER] = -500;
+    defaultSettings.equalMatrix[Token::KEYWORD][Token::STRING] = -300;
+    defaultSettings.equalMatrix[Token::KEYWORD][Token::KEYWORD] = 500;
+    defaultSettings.unequalVector[Token::KEYWORD] = -500;
+    defaultSettings.equalMatrix[Token::KEYWORD][Token::SIGN] = -200;
+    defaultSettings.equalMatrix[Token::KEYWORD][Token::NEW_LINE] = -2000;
+
+    defaultSettings.equalMatrix[Token::SIGN][Token::NUMBER] = -300;
+    defaultSettings.equalMatrix[Token::SIGN][Token::STRING] = -300;
+    defaultSettings.equalMatrix[Token::SIGN][Token::KEYWORD] = -200;
+    defaultSettings.equalMatrix[Token::SIGN][Token::SIGN] = 300;
+    defaultSettings.unequalVector[Token::SIGN] = 0;
+    defaultSettings.equalMatrix[Token::SIGN][Token::NEW_LINE] = -2000;
+
+    defaultSettings.equalMatrix[Token::NEW_LINE][Token::NUMBER] = -2000;
+    defaultSettings.equalMatrix[Token::NEW_LINE][Token::STRING] = -2000;
+    defaultSettings.equalMatrix[Token::NEW_LINE][Token::KEYWORD] = -2000;
+    defaultSettings.equalMatrix[Token::NEW_LINE][Token::SIGN] = -2000;
+    defaultSettings.equalMatrix[Token::NEW_LINE][Token::NEW_LINE] = 2000;
+    defaultSettings.unequalVector[Token::NEW_LINE] = -2000;
+
+    defaultSettings.basePenalty = -100;
+    defaultSettings.penaltyReduction = 10;
+    defaultSettings.minPenalty = 0;
+
+    settings["default"] = defaultSettings;
+    changeSettings("default");
+
     connect(ui->addFolderButton, SIGNAL(clicked()), this, SLOT(addFiles()));
     connect(ui->findButton, SIGNAL(clicked()), this, SLOT(findUniqies()));
     connect(ui->uniquesList, SIGNAL(itemActivated(QListWidgetItem*)),
             this, SLOT(previewUnique(QListWidgetItem*)));
     connect(ui->clearAllPushButton, SIGNAL(clicked()), this, SLOT(clearAll()));
+    connect(ui->comboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeSettings(QString)));
+
+    connect(ui->UUSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->USSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->UKSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->UISpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->UNSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->SUSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->SSSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->SKSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->SISpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->SNSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->KUSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->KSSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->KKSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->KISpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->KNSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->IUSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->ISSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->IKSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->IISpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->INSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->NUSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->NSSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->NKSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->NISpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->NNSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->UUSpinBox_2, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->SSSpinBox_2, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->KKSpinBox_2, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->IISpinBox_2, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->NNSpinBox_2, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+
+    connect(ui->penaltySpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->penaltyReductionSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
+    connect(ui->minPenaltySpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateSettings()));
 }
 
 MainWindow::~MainWindow()
@@ -52,6 +137,98 @@ MainWindow::~MainWindow()
     clearAll();
     delete ui;
 }
+
+void MainWindow::changeSettings(QString settingsName)
+{
+    currentSettings = settings[settingsName];
+    ui->UUSpinBox->setValue(currentSettings.equalMatrix[Token::NUMBER][Token::NUMBER]);
+    ui->USSpinBox->setValue(currentSettings.equalMatrix[Token::NUMBER][Token::STRING]);
+    ui->UKSpinBox->setValue(currentSettings.equalMatrix[Token::NUMBER][Token::KEYWORD]);
+    ui->UISpinBox->setValue(currentSettings.equalMatrix[Token::NUMBER][Token::SIGN]);
+    ui->UNSpinBox->setValue(currentSettings.equalMatrix[Token::NUMBER][Token::NEW_LINE]);
+
+    ui->SUSpinBox->setValue(currentSettings.equalMatrix[Token::STRING][Token::NUMBER]);
+    ui->SSSpinBox->setValue(currentSettings.equalMatrix[Token::STRING][Token::STRING]);
+    ui->SKSpinBox->setValue(currentSettings.equalMatrix[Token::STRING][Token::KEYWORD]);
+    ui->SISpinBox->setValue(currentSettings.equalMatrix[Token::STRING][Token::SIGN]);
+    ui->SNSpinBox->setValue(currentSettings.equalMatrix[Token::STRING][Token::NEW_LINE]);
+
+    ui->KUSpinBox->setValue(currentSettings.equalMatrix[Token::KEYWORD][Token::NUMBER]);
+    ui->KSSpinBox->setValue(currentSettings.equalMatrix[Token::KEYWORD][Token::STRING]);
+    ui->KKSpinBox->setValue(currentSettings.equalMatrix[Token::KEYWORD][Token::KEYWORD]);
+    ui->KISpinBox->setValue(currentSettings.equalMatrix[Token::KEYWORD][Token::SIGN]);
+    ui->KNSpinBox->setValue(currentSettings.equalMatrix[Token::KEYWORD][Token::NEW_LINE]);
+
+    ui->IUSpinBox->setValue(currentSettings.equalMatrix[Token::SIGN][Token::NUMBER]);
+    ui->ISSpinBox->setValue(currentSettings.equalMatrix[Token::SIGN][Token::STRING]);
+    ui->IKSpinBox->setValue(currentSettings.equalMatrix[Token::SIGN][Token::KEYWORD]);
+    ui->IISpinBox->setValue(currentSettings.equalMatrix[Token::SIGN][Token::SIGN]);
+    ui->INSpinBox->setValue(currentSettings.equalMatrix[Token::SIGN][Token::NEW_LINE]);
+
+    ui->NUSpinBox->setValue(currentSettings.equalMatrix[Token::NEW_LINE][Token::NUMBER]);
+    ui->NSSpinBox->setValue(currentSettings.equalMatrix[Token::NEW_LINE][Token::STRING]);
+    ui->NKSpinBox->setValue(currentSettings.equalMatrix[Token::NEW_LINE][Token::KEYWORD]);
+    ui->NISpinBox->setValue(currentSettings.equalMatrix[Token::NEW_LINE][Token::SIGN]);
+    ui->NNSpinBox->setValue(currentSettings.equalMatrix[Token::NEW_LINE][Token::NEW_LINE]);
+
+    ui->UUSpinBox_2->setValue(currentSettings.unequalVector[Token::NUMBER]);
+    ui->SSSpinBox_2->setValue(currentSettings.unequalVector[Token::STRING]);
+    ui->KKSpinBox_2->setValue(currentSettings.unequalVector[Token::KEYWORD]);
+    ui->IISpinBox_2->setValue(currentSettings.unequalVector[Token::SIGN]);
+    ui->NNSpinBox_2->setValue(currentSettings.unequalVector[Token::NEW_LINE]);
+
+    ui->penaltySpinBox->setValue(currentSettings.basePenalty);
+    ui->penaltyReductionSpinBox->setValue(currentSettings.penaltyReduction);
+    ui->minPenaltySpinBox->setValue(currentSettings.minPenalty);
+
+    nwa.setSettings(currentSettings);
+}
+
+void MainWindow::updateSettings()
+{
+    currentSettings.equalMatrix[Token::NUMBER][Token::NUMBER] = ui->UUSpinBox->value();
+    currentSettings.equalMatrix[Token::NUMBER][Token::STRING] = ui->USSpinBox->value();
+    currentSettings.equalMatrix[Token::NUMBER][Token::KEYWORD] = ui->UKSpinBox->value();
+    currentSettings.equalMatrix[Token::NUMBER][Token::SIGN] = ui->UISpinBox->value();
+    currentSettings.equalMatrix[Token::NUMBER][Token::NEW_LINE] = ui->UNSpinBox->value();
+
+    currentSettings.equalMatrix[Token::STRING][Token::NUMBER] = ui->SUSpinBox->value();
+    currentSettings.equalMatrix[Token::STRING][Token::STRING] = ui->SSSpinBox->value();
+    currentSettings.equalMatrix[Token::STRING][Token::KEYWORD] = ui->SKSpinBox->value();
+    currentSettings.equalMatrix[Token::STRING][Token::SIGN] = ui->SISpinBox->value();
+    currentSettings.equalMatrix[Token::STRING][Token::NEW_LINE] = ui->SNSpinBox->value();
+
+    currentSettings.equalMatrix[Token::KEYWORD][Token::NUMBER] = ui->KUSpinBox->value();
+    currentSettings.equalMatrix[Token::KEYWORD][Token::STRING] = ui->KSSpinBox->value();
+    currentSettings.equalMatrix[Token::KEYWORD][Token::KEYWORD] = ui->KKSpinBox->value();
+    currentSettings.equalMatrix[Token::KEYWORD][Token::SIGN] = ui->KISpinBox->value();
+    currentSettings.equalMatrix[Token::KEYWORD][Token::NEW_LINE] = ui->KNSpinBox->value();
+
+    currentSettings.equalMatrix[Token::SIGN][Token::NUMBER] = ui->IUSpinBox->value();
+    currentSettings.equalMatrix[Token::SIGN][Token::STRING] = ui->ISSpinBox->value();
+    currentSettings.equalMatrix[Token::SIGN][Token::KEYWORD] = ui->IKSpinBox->value();
+    currentSettings.equalMatrix[Token::SIGN][Token::SIGN] = ui->IISpinBox->value();
+    currentSettings.equalMatrix[Token::SIGN][Token::NEW_LINE] = ui->INSpinBox->value();
+
+    currentSettings.equalMatrix[Token::NEW_LINE][Token::NUMBER] = ui->NUSpinBox->value();
+    currentSettings.equalMatrix[Token::NEW_LINE][Token::STRING] = ui->NSSpinBox->value();
+    currentSettings.equalMatrix[Token::NEW_LINE][Token::KEYWORD] = ui->NKSpinBox->value();
+    currentSettings.equalMatrix[Token::NEW_LINE][Token::SIGN] = ui->NISpinBox->value();
+    currentSettings.equalMatrix[Token::NEW_LINE][Token::NEW_LINE] = ui->NNSpinBox->value();
+
+    currentSettings.unequalVector[Token::NUMBER] = ui->UUSpinBox_2->value();
+    currentSettings.unequalVector[Token::STRING] = ui->SSSpinBox_2->value();
+    currentSettings.unequalVector[Token::KEYWORD] = ui->KKSpinBox_2->value();
+    currentSettings.unequalVector[Token::SIGN] = ui->IISpinBox_2->value();
+    currentSettings.unequalVector[Token::NEW_LINE] = ui->NNSpinBox_2->value();
+
+    currentSettings.basePenalty = ui->penaltySpinBox->value();
+    currentSettings.penaltyReduction = ui->penaltyReductionSpinBox->value();
+    currentSettings.minPenalty = ui->minPenaltySpinBox->value();
+
+    nwa.setSettings(currentSettings);
+}
+
 
 void MainWindow::updateTextEdit(const TokenGraph &graph, QTextEdit &textEdit)
 {
@@ -247,6 +424,9 @@ void MainWindow::findUniqies()
     uniques.clear();
     ui->uniquesList->clear();
 
+    QTime timer;
+    timer.start();
+
     QProgressDialog progress("", "Cancel", 0, files.size(), this);
     progress.setWindowTitle("Uniques");
     progress.setWindowModality(Qt::WindowModal);
@@ -344,9 +524,10 @@ void MainWindow::findUniqies()
         uniques[templateFile.getID()] = graph;
         ui->uniquesList->addItem(templateFile.getName().c_str());
     }
-
     progress.setValue(files.size());
     ui->uniqueLabel->setText(QString("%1").arg(uniques.size()));
+    statusBar()->showMessage(QString("Operation finished in %1 ms. Found %2 unique(s) file(s). Heuristic used %3 times: calculations reduced by %4\%.")
+                             .arg(timer.elapsed()).arg(uniquesNumber).arg(usedHeuristicNumber).arg((float)usedHeuristicNumber/totalCalculations*100.0f));
 }
 
 std::vector<const File*> MainWindow::calculateFiles(const std::vector<const File*> &fileList,

@@ -180,7 +180,11 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QTextEdit" name="previewEdit"/>
+        <widget class="QTextEdit" name="previewEdit">
+         <property name="lineWrapMode">
+          <enum>QTextEdit::NoWrap</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -296,50 +300,65 @@
            <item row="1" column="1">
             <widget class="QSpinBox" name="UUSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="1" column="2">
             <widget class="QSpinBox" name="USSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="1" column="3">
             <widget class="QSpinBox" name="UKSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="1" column="4">
             <widget class="QSpinBox" name="UISpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="1" column="5">
             <widget class="QSpinBox" name="UNSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -356,50 +375,53 @@
            <item row="2" column="1">
             <widget class="QSpinBox" name="SUSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="2" column="2">
             <widget class="QSpinBox" name="SSSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="2" column="3">
             <widget class="QSpinBox" name="SKSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="2" column="4">
             <widget class="QSpinBox" name="SISpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="2" column="5">
             <widget class="QSpinBox" name="SNSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -416,50 +438,53 @@
            <item row="3" column="1">
             <widget class="QSpinBox" name="KUSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="3" column="2">
             <widget class="QSpinBox" name="KSSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="3" column="3">
             <widget class="QSpinBox" name="KKSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="3" column="4">
             <widget class="QSpinBox" name="KISpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="3" column="5">
             <widget class="QSpinBox" name="KNSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -476,50 +501,53 @@
            <item row="4" column="1">
             <widget class="QSpinBox" name="IUSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
+             </property>
+             <property name="value">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="4" column="2">
             <widget class="QSpinBox" name="ISSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="4" column="3">
             <widget class="QSpinBox" name="IKSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="4" column="4">
             <widget class="QSpinBox" name="IISpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="4" column="5">
             <widget class="QSpinBox" name="INSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -536,50 +564,50 @@
            <item row="5" column="1">
             <widget class="QSpinBox" name="NUSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="5" column="2">
             <widget class="QSpinBox" name="NSSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="5" column="3">
             <widget class="QSpinBox" name="NKSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="5" column="4">
             <widget class="QSpinBox" name="NISpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
            <item row="5" column="5">
             <widget class="QSpinBox" name="NNSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -659,10 +687,10 @@
            <item row="1" column="1">
             <widget class="QSpinBox" name="UUSpinBox_2">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -679,10 +707,10 @@
            <item row="2" column="2">
             <widget class="QSpinBox" name="SSSpinBox_2">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -699,10 +727,10 @@
            <item row="3" column="3">
             <widget class="QSpinBox" name="KKSpinBox_2">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -719,10 +747,10 @@
            <item row="4" column="4">
             <widget class="QSpinBox" name="IISpinBox_2">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -739,10 +767,10 @@
            <item row="5" column="5">
             <widget class="QSpinBox" name="NNSpinBox_2">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -772,10 +800,10 @@
            <item row="0" column="1">
             <widget class="QSpinBox" name="penaltySpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -792,10 +820,10 @@
            <item row="1" column="1">
             <widget class="QSpinBox" name="penaltyReductionSpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>
@@ -812,10 +840,10 @@
            <item row="2" column="1">
             <widget class="QSpinBox" name="minPenaltySpinBox">
              <property name="minimum">
-              <number>-1000</number>
+              <number>-1000000</number>
              </property>
              <property name="maximum">
-              <number>1000</number>
+              <number>1000000</number>
              </property>
             </widget>
            </item>

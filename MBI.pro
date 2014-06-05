@@ -25,6 +25,7 @@ HEADERS  += MainWindow.h \
     FileHelper.h \
     TokenGraph.h \
     Token.h \
-    NeedlemanWunschAlgorithm.h
+    NeedlemanWunschAlgorithm.h \
+    NWASettings.h
 
 FORMS    += MainWindow.ui

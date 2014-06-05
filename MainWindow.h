@@ -10,6 +10,7 @@
 #include "File.h"
 #include "FileHelper.h"
 #include "NeedlemanWunschAlgorithm.h"
+#include "NWASettings.h"
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +39,8 @@ public slots:
     void findUniqies();
     void previewUnique(QListWidgetItem*);
     void clearAll();
+    void changeSettings(QString settingsName);
+    void updateSettings();
 
 private:
     void updateTextEdit(const TokenGraph& graph, QTextEdit& textEdit);
@@ -47,6 +50,10 @@ private:
     std::map<int, TokenGraph*> uniques;
     NeedlemanWunschAlgorithm nwa;
     Ui::MainWindow *ui;
+
+    // Settings map
+    std::map<QString, NWASettings> settings;
+    NWASettings currentSettings;
 
     // Loading files variables
     QMutex loadMutex;
