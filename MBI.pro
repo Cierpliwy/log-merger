@@ -14,18 +14,19 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES +=\
-        MainWindow.cpp \
-        Main.cpp \
-    File.cpp \
-    FileHelper.cpp \
-    NeedlemanWunschAlgorithm.cpp
+    src/MainWindow.cpp \
+    src/Main.cpp \
+    src/File.cpp \
+    src/FileHelper.cpp \
+    src/NeedlemanWunschAlgorithm.cpp
 
-HEADERS  += MainWindow.h \
-    File.h \
-    FileHelper.h \
-    TokenGraph.h \
-    Token.h \
-    NeedlemanWunschAlgorithm.h \
-    NWASettings.h
+HEADERS  +=\
+    src/MainWindow.h \
+    src/File.h \
+    src/FileHelper.h \
+    src/TokenGraph.h \
+    src/Token.h \
+    src/NeedlemanWunschAlgorithm.h \
+    src/NWASettings.h
 
-FORMS    += MainWindow.ui
+FORMS    += src/MainWindow.ui

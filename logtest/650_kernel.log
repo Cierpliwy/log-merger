@@ -1,0 +1,38 @@
+[  158.908869] kernelinjector: --- INJECTION START ---
+[  158.909807] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.911072] kernelinjector: 	REG: R13 0xffff88000d111d38+18
+[  158.912053] kernelinjector: 	BITFLIP 0xffff88000d111d4a:4 (0xffff88000d111d4a)
+[  158.912053] kernelinjector: --- INJECTION END ---
+[  158.914744] general protection fault: 0000 [#1] PREEMPT SMP 
+[  158.915813] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.917566] CPU: 2 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.917566] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.917566] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.917566] RIP: 0010:[<ffffffff811639f5>]  [<ffffffff811639f5>] vma_compute_subtree_gap+0x15/0x50
+[  158.917566] RSP: 0018:ffff88000d111d50  EFLAGS: 00010282
+[  158.917566] RAX: ffffff70bd8b48ff RBX: ffff88000d098698 RCX: ffff88000d098698
+[  158.917566] RDX: ff70bd8b48000001 RSI: ffff88000d198ac8 RDI: ffff88000d098678
+[  158.917566] RBP: ffff88000d111d50 R08: 0000000000000000 R09: ffff88000d198ac8
+[  158.917566] R10: 0000000000000000 R11: ffff88000d48c000 R12: ffff88000d198ae8
+[  158.917566] R13: ffff880000013840 R14: ffff88000d1986a8 R15: ffff88000d098698
+[  158.917566] FS:  00007f02d2219740(0000) GS:ffff88000fd00000(0000) knlGS:0000000000000000
+[  158.917566] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  158.917566] CR2: 00007f305920e4f0 CR3: 000000000da44000 CR4: 00000000000006e0
+[  158.917566] Stack:
+[  158.917566]  ffff88000d111d68 ffffffff81163a8e ffff88000d198ac8 ffff88000d111da0
+[  158.917566]  ffffffff811646d7 ffff880000013840 ffff88000d198ac8 ffff88000d098698
+[  158.917566]  ffff88000d1986a8 ffff88000497f058 ffff88000d111de0 ffffffff8116477d
+[  158.917566] Call Trace:
+[  158.917566]  [<ffffffff81163a8e>] vma_gap_update+0x2e/0x40
+[  158.917566]  [<ffffffff811646d7>] __vma_link_rb+0x57/0x90
+[  158.917566]  [<ffffffff8116477d>] vma_link+0x6d/0xc0
+[  158.917566]  [<ffffffff81166b64>] mmap_region+0x454/0x5d0
+[  158.917566]  [<ffffffff81167037>] do_mmap_pgoff+0x357/0x3e0
+[  158.917566]  [<ffffffff811514dd>] vm_mmap_pgoff+0x8d/0xc0
+[  158.917566]  [<ffffffff8116557e>] SyS_mmap_pgoff+0xbe/0x250
+[  158.917566]  [<ffffffff81019872>] SyS_mmap+0x22/0x30
+[  158.917566]  [<ffffffff814fac2d>] system_call_fastpath+0x1a/0x1f
+[  158.917566] Code: e8 99 00 48 89 e5 31 c0 48 85 d2 48 0f 49 c2 5d c3 0f 1f 44 00 00 0f 1f 44 00 00 48 8b 57 18 55 48 8b 07 48 89 e5 48 85 d2 74 04 <48> 2b 42 08 48 8b 57 30 48 85 d2 74 0b 48 8b 52 18 48 39 d0 48 
+[  158.917566] RIP  [<ffffffff811639f5>] vma_compute_subtree_gap+0x15/0x50
+[  158.917566]  RSP <ffff88000d111d50>
+[  158.955854] ---[ end trace 1a3630628cf527ad ]---

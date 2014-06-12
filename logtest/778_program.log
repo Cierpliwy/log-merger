@@ -1,0 +1,6 @@
+[INTERNAL] Msg: 72B, Injection: TRIGGER ext4_file_mmap REGS MAX_INJECTIONS 1 SEED 6945683447010598724, Retries: 3
+[simple.tst] Test started
+[simple.tst] Segmentation fault handler invoked:
+[simple.tst] Got signal: Segmentation fault
+[simple.tst] Last errno: Success
+[simple.tst] At address: <ffffffff81290ee0>

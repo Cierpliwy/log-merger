@@ -1,0 +1,114 @@
+[  158.923300] kernelinjector: --- INJECTION START ---
+[  158.924176] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.925296] kernelinjector: 	REG: R15 0xffff88000d111d38+2
+[  158.926224] kernelinjector: 	BITFLIP 0xffff88000d111d3a:4 (0xffff88000d111d3a)
+[  158.926551] kernelinjector: --- INJECTION END ---
+[  158.928244] general protection fault: 0000 [#1] PREEMPT SMP 
+[  158.929235] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.931537] CPU: 0 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.931537] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.931537] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.931537] RIP: 0010:[<ffffffff81151323>]  [<ffffffff81151323>] __vma_link_list+0x23/0x60
+[  158.931537] RSP: 0018:ffff88000d111da0  EFLAGS: 00010282
+[  158.931537] RAX: ffff88000d96bcd0 RBX: ffff880000013840 RCX: ffff17e9c375c085
+[  158.931537] RDX: ffff88000dbab0b8 RSI: ffff88000decd678 RDI: ffff880000013840
+[  158.931537] RBP: ffff88000d111da0 R08: 0000000000000000 R09: ffff88000decd678
+[  158.931537] R10: 0000000000000000 R11: ffff88000d48c000 R12: ffff88000decd678
+[  158.931537] R13: ffff88000d198698 R14: ffff88000d1986a8 R15: ffff88000497f058
+[  158.931537] FS:  00007f02d2219740(0000) GS:ffff88000fc00000(0000) knlGS:0000000000000000
+[  158.931537] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  158.931537] CR2: 00007f3056f6e8e8 CR3: 000000000da44000 CR4: 00000000000006f0
+[  158.931537] Stack:
+[  158.931537]  ffff88000d111de0 ffffffff8116476c ffff88000dbab0b8 ffff88000d1986a8
+[  158.931537]  00007f02d2221000 ffff88000d198698 ffff88000d995500 ffff88000dbab0b8
+[  158.931537]  ffff88000d111e60 ffffffff81166b64 ffff88000d995500 0000000000000000
+[  158.931537] Call Trace:
+[  158.931537]  [<ffffffff8116476c>] vma_link+0x5c/0xc0
+[  158.931537]  [<ffffffff81166b64>] mmap_region+0x454/0x5d0
+[  158.931537]  [<ffffffff81167037>] do_mmap_pgoff+0x357/0x3e0
+[  158.931537]  [<ffffffff811514dd>] vm_mmap_pgoff+0x8d/0xc0
+[  158.931537]  [<ffffffff8116557e>] SyS_mmap_pgoff+0xbe/0x250
+[  158.931537]  [<ffffffff81019872>] SyS_mmap+0x22/0x30
+[  158.931537]  [<ffffffff814fac2d>] system_call_fastpath+0x1a/0x1f
+[  158.931537] Code: 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 55 48 85 d2 48 89 56 18 48 89 e5 74 1e 48 8b 4a 10 48 89 72 10 48 85 c9 48 89 4e 10 74 04 <48> 89 71 18 5d c3 0f 1f 80 00 00 00 00 48 85 c9 48 89 37 74 10 
+[  158.931537] RIP  [<ffffffff81151323>] __vma_link_list+0x23/0x60
+[  158.931537]  RSP <ffff88000d111da0>
+[  158.963113] ---[ end trace 1a3630628cf527ad ]---
+[  159.196863] general protection fault: 0000 [#2] PREEMPT SMP 
+[  159.198105] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  159.200103] CPU: 3 PID: 82 Comm: kworker/3:2 Tainted: G      D    O 3.12.7-2-ARCH #1
+[  159.200103] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  159.200103] Workqueue: events_freezable_power_ disk_events_workfn
+[  159.200103] task: ffff88000db722c0 ti: ffff88000d148000 task.ti: ffff88000d148000
+[  159.200103] RIP: 0010:[<ffffffffa000b0a8>]  [<ffffffffa000b0a8>] scsi_execute+0x118/0x160 [scsi_mod]
+[  159.200103] RSP: 0018:ffff88000d149d6e  EFLAGS: 00010292
+[  159.200103] RAX: 0000000000000000 RBX: 0000000000000008 RCX: ffff880000000000
+[  159.200103] RDX: 0000000000000000 RSI: ffff88000dadb5f0 RDI: ffff88000cbc76c0
+[  159.200103] RBP: 88000d9ec8780000 R08: 0000000000000001 R09: 0000160000000000
+[  159.200103] R10: 0000000000000001 R11: 0000000000000000 R12: ffff88000d149d56
+[  159.200103] R13: ffff8139567d0000 R14: 000000100000014a R15: 000032fea4f90008
+[  159.200103] FS:  0000000000000000(0000) GS:ffff88000fd80000(0000) knlGS:0000000000000000
+[  159.200103] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  159.200103] CR2: 00000000ffffffff CR3: 000000000180d000 CR4: 00000000000006e0
+[  159.200103] Stack:
+[  159.200103]  88000db9f700ffff 88000db9f768ffff 88000d149d98ffff ffffa00fa058ffff
+[  159.200103]  88000d9ec840ffff 88000d149db8ffff ffffa0108c29ffff 000000fd97c0ffff
+[  159.200103]  88000db92c000000 88000d149e10ffff ffff81275d11ffff ffff00000000ffff
+[  159.200103] Call Trace:
+[  159.200103] Code: 87 2c 01 00 00 48 8b 4d 28 89 01 45 8b af 04 01 00 00 4c 89 ff e8 29 10 26 e1 48 83 c4 10 44 89 e8 5b 41 5c 41 5d 41 5e 41 5f 5d <c3> 0f 1f 80 00 00 00 00 49 8b 7e 08 48 8b 55 c8 41 b8 10 00 00 
+[  159.200103] RIP  [<ffffffffa000b0a8>] scsi_execute+0x118/0x160 [scsi_mod]
+[  159.200103]  RSP <ffff88000d149d6e>
+[  159.236116] ---[ end trace 1a3630628cf527ae ]---
+[  159.237378] BUG: unable to handle kernel paging request at ffffffffffffffd8
+[  159.238591] IP: [<ffffffff810845c0>] kthread_data+0x10/0x20
+[  159.239484] PGD 1810067 PUD 1812067 PMD 0 
+[  159.240183] Oops: 0000 [#3] PREEMPT SMP 
+[  159.240449] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  159.240449] CPU: 3 PID: 82 Comm: kworker/3:2 Tainted: G      D    O 3.12.7-2-ARCH #1
+[  159.240449] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  159.240449] task: ffff88000db722c0 ti: ffff88000d148000 task.ti: ffff88000d148000
+[  159.240449] RIP: 0010:[<ffffffff810845c0>]  [<ffffffff810845c0>] kthread_data+0x10/0x20
+[  159.240449] RSP: 0018:ffff88000d149a80  EFLAGS: 00010002
+[  159.240449] RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000009
+[  159.240449] RDX: 0000000000000002 RSI: 0000000000000003 RDI: ffff88000db722c0
+[  159.240449] RBP: ffff88000d149a80 R08: 0000000000000001 R09: 000000251348a665
+[  159.240449] R10: ffff88000d149fd8 R11: 0000000000000001 R12: ffff88000fd944c0
+[  159.240449] R13: 0000000000000003 R14: ffff88000db722b0 R15: ffff88000db722c0
+[  159.240449] FS:  0000000000000000(0000) GS:ffff88000fd80000(0000) knlGS:0000000000000000
+[  159.240449] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  159.240449] CR2: 0000000000000028 CR3: 000000000d1b5000 CR4: 00000000000006e0
+[  159.240449] Stack:
+[  159.240449]  ffff88000d149a98 ffffffff8107db01 ffff88000db722c0 ffff88000d149ba0
+[  159.240449]  ffffffff814f142f 00000000000144c0 ffff88000d149fd8 ffff88000d149fd8
+[  159.240449]  00000000000144c0 ffff88000db722c0 ffff88000d966b40 ffff88000d149fd8
+[  159.240449] Call Trace:
+[  159.240449]  [<ffffffff8107db01>] wq_worker_sleeping+0x11/0x90
+[  159.240449]  [<ffffffff814f142f>] __schedule+0x6cf/0x960
+[  159.240449]  [<ffffffff8128a54b>] ? cfq_exit_cfqq+0x2b/0x80
+[  159.240449]  [<ffffffff8128a5e4>] ? cfq_exit_icq+0x44/0x60
+[  159.240449]  [<ffffffff81270b09>] ? put_io_context_active+0x99/0xc0
+[  159.240449]  [<ffffffff814f16e9>] schedule+0x29/0x70
+[  159.240449]  [<ffffffff81064482>] do_exit+0x712/0xab0
+[  159.240449]  [<ffffffff814f44d1>] oops_end+0xa1/0xe0
+[  159.240449]  [<ffffffff810182bb>] die+0x4b/0x70
+[  159.240449]  [<ffffffff814f3fba>] do_general_protection+0xca/0x150
+[  159.240449]  [<ffffffff814f3958>] general_protection+0x28/0x30
+[  159.240449]  [<ffffffffa000b0a8>] ? scsi_execute+0x118/0x160 [scsi_mod]
+[  159.240449]  [<ffffffffa00fa058>] ? cdrom_check_events+0x18/0x30 [cdrom]
+[  159.240449]  [<ffffffffa0108c29>] ? sr_block_check_events+0x39/0x50 [sr_mod]
+[  159.240449]  [<ffffffff81275d11>] ? disk_check_events+0x51/0x140
+[  159.240449]  [<ffffffff81275e16>] ? disk_events_workfn+0x16/0x20
+[  159.240449]  [<ffffffff8107cb67>] ? process_one_work+0x167/0x450
+[  159.240449]  [<ffffffff8107d561>] ? worker_thread+0x121/0x3a0
+[  159.240449]  [<ffffffff814f2cfd>] ? _raw_spin_unlock_irqrestore+0xd/0x50
+[  159.240449]  [<ffffffff8107d440>] ? manage_workers.isra.23+0x2a0/0x2a0
+[  159.240449]  [<ffffffff81083f60>] ? kthread+0xc0/0xd0
+[  159.240449]  [<ffffffff81083ea0>] ? kthread_create_on_node+0x120/0x120
+[  159.240449]  [<ffffffff814fab7c>] ? ret_from_fork+0x7c/0xb0
+[  159.240449]  [<ffffffff81083ea0>] ? kthread_create_on_node+0x120/0x120
+[  159.240449] Code: 00 48 89 e5 5d 48 8b 40 c8 48 c1 e8 02 83 e0 01 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8b 87 d0 03 00 00 55 48 89 e5 <48> 8b 40 d8 5d c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 
+[  159.240449] RIP  [<ffffffff810845c0>] kthread_data+0x10/0x20
+[  159.240449]  RSP <ffff88000d149a80>
+[  159.240449] CR2: ffffffffffffffd8
+[  159.240449] ---[ end trace 1a3630628cf527af ]---
+[  159.240449] Fixing recursive fault but reboot is needed!

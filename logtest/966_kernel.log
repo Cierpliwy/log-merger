@@ -1,0 +1,40 @@
+[  158.879573] kernelinjector: --- INJECTION START ---
+[  158.880204] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.881031] kernelinjector: 	REG: RSI 0xffff88000d111d38+105
+[  158.881693] kernelinjector: 	BITFLIP 0xffff88000d111da1:2 (0xffff88000d111da1)
+[  158.882494] kernelinjector: --- INJECTION END ---
+[  158.901960] BUG: unable to handle kernel paging request at 000000656c62616c
+[  158.904490] IP: [<ffffffff8116b3bd>] anon_vma_clone+0x5d/0x190
+[  158.904490] PGD daef067 PUD 0 
+[  158.904490] Oops: 0000 [#1] PREEMPT SMP 
+[  158.904490] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.904490] CPU: 0 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.904490] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.904490] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.904490] RIP: 0010:[<ffffffff8116b3bd>]  [<ffffffff8116b3bd>] anon_vma_clone+0x5d/0x190
+[  158.904490] RSP: 0018:ffff88000d111e58  EFLAGS: 00010286
+[  158.904490] RAX: ffff88000d1e70c0 RBX: ffff88000decd678 RCX: 0000000000434800
+[  158.904490] RDX: 0000000000434780 RSI: 0000000000000200 RDI: ffff88000d111fd8
+[  158.904490] RBP: ffff88000d111e98 R08: 0000000000017260 R09: ffff88000e801b00
+[  158.904490] R10: ffff88000d111fd8 R11: ffffffff8116b3b1 R12: 000000656c626164
+[  158.904490] R13: 0000000000000000 R14: ffff88000d1e70c0 R15: 0000000000000000
+[  158.904490] FS:  00007f02d2219740(0000) GS:ffff88000fc00000(0000) knlGS:0000000000000000
+[  158.904490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  158.904490] CR2: 000000656c62616c CR3: 000000000da44000 CR4: 00000000000006f0
+[  158.904490] Stack:
+[  158.904490]  ffff88000decd6f0 ffffffffa0189678 ffffffff81164f20 ffff88000decd678
+[  158.904490]  ffffffffa0189600 00007f02d13fd000 0000000000000001 0000000000000000
+[  158.904490]  ffff88000d111ed8 ffffffff81164f8e ffff88000ebba278 ffff880000013840
+[  158.904490] Call Trace:
+[  158.904490]  [<ffffffff81164f20>] ? __split_vma.isra.30+0x60/0x200
+[  158.904490]  [<ffffffff81164f8e>] __split_vma.isra.30+0xce/0x200
+[  158.904490]  [<ffffffff811660d0>] do_munmap+0x310/0x380
+[  158.904490]  [<ffffffff810715a2>] ? __set_task_blocked+0x32/0x70
+[  158.904490]  [<ffffffff81166181>] vm_munmap+0x41/0x60
+[  158.904490]  [<ffffffff811670e2>] SyS_munmap+0x22/0x30
+[  158.904490]  [<ffffffff814fac2d>] system_call_fastpath+0x1a/0x1f
+[  158.904490] Code: c0 48 39 c2 4c 8d 60 f0 0f 84 97 00 00 00 48 8b 3d 81 6e 99 00 be 00 02 00 00 e8 4f d1 01 00 48 85 c0 49 89 c6 0f 84 8b 00 00 00 <4d> 8b 7c 24 08 49 8b 0f 4c 39 e9 74 1d 4d 85 ed 0f 85 bd 00 00 
+[  158.904490] RIP  [<ffffffff8116b3bd>] anon_vma_clone+0x5d/0x190
+[  158.904490]  RSP <ffff88000d111e58>
+[  158.904490] CR2: 000000656c62616c
+[  158.934201] ---[ end trace 1a3630628cf527ad ]---

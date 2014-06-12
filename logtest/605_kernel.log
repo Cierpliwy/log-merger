@@ -1,0 +1,7 @@
+[  158.895291] kernelinjector: --- INJECTION START ---
+[  158.895920] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.896839] kernelinjector: 	REG: R15 0xffff88000d111d38+2
+[  158.897596] kernelinjector: 	BITFLIP 0xffff88000d111d3a:3 (0xffff88000d111d3a)
+[  158.898523] kernelinjector: --- INJECTION END ---
+[  158.930113] BUG: Bad rss-counter state mm:ffff880000013840 idx:0 val:141
+[  158.930115] BUG: Bad rss-counter state mm:ffff880000013840 idx:1 val:29

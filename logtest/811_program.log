@@ -1,0 +1,16 @@
+[INTERNAL] Msg: 72B, Injection: TRIGGER ext4_file_mmap REGS MAX_INJECTIONS 1 SEED 1487498502175810617, Retries: 3
+[simple.tst] Test started
+[simple.tst] Segmentation fault handler invoked:
+[simple.tst] Got signal: Segmentation fault
+[simple.tst] Last errno: Success
+[simple.tst] At address: <00007f02d2221000>
+[simple.tst]  <0x00007f02d18723e0>         __restore_rt + 0x0000
+[simple.tst]  <0x00007f02d11fb297>            test_func + 0x0662
+[simple.tst]  <0x0000000000402335>           test_start + 0x004b
+[simple.tst]  <0x0000000000401eec>                 main + 0x08ff
+[simple.tst]  <0x00007f02d185eb05>    __libc_start_main + 0x00f5
+[simple.tst]  <0x0000000000401529>               _start + 0x0029
+[simple.tst] Error[map test1 to memory]: mmap(NULL, 256, PROT_WRITE | PROT_READ, MAP_SHARED, fd3, 0) == (void*)(-1), got: 0 (Invalid argument)
+[simple.tst] Retrying... 1/3
+[simple.tst] TEST FAILED
+[INTERNAL] Closing test: simple.tst... OK

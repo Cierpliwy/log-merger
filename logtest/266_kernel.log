@@ -1,0 +1,39 @@
+[  158.869886] kernelinjector: --- INJECTION START ---
+[  158.870762] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.871935] kernelinjector: 	REG: RSI 0xffff88000d111d38+108
+[  158.872962] kernelinjector: 	BITFLIP 0xffff88000d111da4:0 (0xffff88000d111da4)
+[  158.873081] kernelinjector: --- INJECTION END ---
+[  158.874957] BUG: unable to handle kernel paging request at ffff88010decd708
+[  158.876124] IP: [<ffffffffa013d8bb>] ext4_file_mmap+0x4b/0x60 [ext4]
+[  158.877201] PGD 1b32067 PUD 0 
+[  158.877738] Oops: 0002 [#1] PREEMPT SMP 
+[  158.878251] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.878251] CPU: 0 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.878251] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.878251] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.878251] RIP: 0010:[<ffffffffa013d8bb>]  [<ffffffffa013d8bb>] ext4_file_mmap+0x4b/0x60 [ext4]
+[  158.878251] RSP: 0018:ffff88000d111dd8  EFLAGS: 00010246
+[  158.878251] RAX: 0000000000000000 RBX: ffff88000d1986a8 RCX: 0000000000000020
+[  158.878251] RDX: ffffffffffffffe0 RSI: ffff88010decd678 RDI: ffff88000db642a8
+[  158.878251] RBP: ffff88000d111de0 R08: 000000000001b0e0 R09: ffffffffa0111302
+[  158.878251] R10: 0000000000800001 R11: ffff88000d48c000 R12: 00007f02d2221000
+[  158.878251] R13: ffff88000d198698 R14: ffff88000d995d00 R15: ffff88000daab0b8
+[  158.878251] FS:  00007f02d2219740(0000) GS:ffff88000fc00000(0000) knlGS:0000000000000000
+[  158.878251] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  158.878251] CR2: ffff88010decd708 CR3: 000000000da44000 CR4: 00000000000006f0
+[  158.878251] Stack:
+[  158.878251]  ffff88010decd678 ffff88000d111e60 ffffffff81166ae3 ffff88000d995d00
+[  158.878251]  0000000000000000 0000000000000000 0000000000000000 0000000000000001
+[  158.878251]  00000000000000fb 0000000000000000 ffff88000decd678 ffff880000013840
+[  158.878251] Call Trace:
+[  158.878251]  [<ffffffff81166ae3>] mmap_region+0x3d3/0x5d0
+[  158.878251]  [<ffffffff81167037>] do_mmap_pgoff+0x357/0x3e0
+[  158.878251]  [<ffffffff811514dd>] vm_mmap_pgoff+0x8d/0xc0
+[  158.878251]  [<ffffffff8116557e>] SyS_mmap_pgoff+0xbe/0x250
+[  158.878251]  [<ffffffff81019872>] SyS_mmap+0x22/0x30
+[  158.878251]  [<ffffffff814fac2d>] system_call_fastpath+0x1a/0x1f
+[  158.878251] Code: 47 42 04 74 13 48 c7 86 90 00 00 00 20 96 18 a0 31 c0 c9 c3 0f 1f 40 00 48 83 c7 10 48 89 75 f8 e8 3b 04 08 e1 48 8b 75 f8 31 c0 <48> c7 86 90 00 00 00 20 96 18 a0 c9 c3 b8 f8 ff ff ff c3 66 90 
+[  158.878251] RIP  [<ffffffffa013d8bb>] ext4_file_mmap+0x4b/0x60 [ext4]
+[  158.878251]  RSP <ffff88000d111dd8>
+[  158.878251] CR2: ffff88010decd708
+[  158.878251] ---[ end trace 1a3630628cf527ad ]---

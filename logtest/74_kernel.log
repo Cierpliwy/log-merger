@@ -1,0 +1,5 @@
+[  158.905301] kernelinjector: --- INJECTION START ---
+[  158.906249] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.907546] kernelinjector: 	REG: R14 0xffff88000d111d38+10
+[  158.908507] kernelinjector: 	BITFLIP 0xffff88000d111d42:6 (0xffff88000d111d42)
+[  158.908507] kernelinjector: --- INJECTION END ---

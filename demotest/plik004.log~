@@ -1,0 +1,27 @@
+Plik testowy 4
+[  158.932002] Hmm: 0 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.932002] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.932002] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.932002] RIP: 0010:[<ffffffff81151323>]  [<ffffffff81151323>] __vma_link_list+0x23/0x60
+[  158.932002] RSP: 0018:ffff88000d111da0  EFLAGS: 00010206
+[  158.932002] RAX: ffff88000d96bcd0 RBX: ffff880000013840 RCX: 00007f02d221e000
+[  158.932002] RDX: ffff88000daab0b0 RSI: ffff8823426cd678 RDI: ffff880000013840
+[  158.932002] RBP: ffff88000d111da0 R08: 0000000000000000 R09: ffff88000decd678
+[  158.932002] R10: 0000003240000000 R11: ffff88000daab0b0 R12: ffff882342343678
+[  158.932002] R13: ffff88000d198698 R14: ffff88000d1986a8 R15: ffff88000497f058
+[  158.932002] FS:  00007f02d2219740(0000) GS:ffff88000fc00000(0000) knlGS:0000000000000000
+[  158.932002] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+Line was replaced
+[  158.932002] Stack:
+[  158.932002]  ffff88000d111de0 fffffff23412126c ffff88000daab0b0 ffff88000d1986a8
+[  158.932002]  00007f02d2221000 ffff88000d198698 ffff234144445600 ffff88000daab0b0
+[  158.932002]  ffff88000d111e60 ffffffff81166b64 ffff88000d995600 0000213400000000
+[  158.932002] Call Trace:
+[  158.932002]  [<ffffffff8116476c>] wow+0x5c/0xc0
+[  158.932002]  [<ffffffff8116476c>] vma_link+0x5c/0xc0
+[  158.932002]  [<ffffffff81166b64>] mmap_region+0x454/0x5d0
+[  158.932002]  [<ffffffff81167037>] do_mmap_pgoff+0x357/0x3e0
+[  158.932002]  [<ffffffff811514dd>] vm_mmap_pgoff+0x83/0xc0
+[  158.932002]  [<ffffffff8116557e>] SyS_mmap_pgoff+0xbe/0x2122
+[  158.932002]  [<ffffffff81019872>] SyS_mmap+0x22/0x30
+[  158.932002]  [<ffffffff814fac2d>] system_call_fastpath+0x1a/0x1f

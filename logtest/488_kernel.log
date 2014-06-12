@@ -1,0 +1,70 @@
+[  158.917188] kernelinjector: --- INJECTION START ---
+[  158.918106] kernelinjector: 	TRIGGER 0xffffffffa013d870 (ext4_file_mmap+0)
+[  158.919351] kernelinjector: 	REG: RBP 0xffff88000d111d38+38
+[  158.920396] kernelinjector: 	BITFLIP 0xffff88000d111d5e:0 (0xffff88000d111d5e)
+[  158.920448] kernelinjector: --- INJECTION END ---
+[  158.923135] stack segment: 0000 [#1] PREEMPT SMP 
+[  158.924080] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.925895] CPU: 0 PID: 986 Comm: fstest Tainted: G           O 3.12.7-2-ARCH #1
+[  158.925895] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.925895] task: ffff88000d96bcd0 ti: ffff88000d110000 task.ti: ffff88000d110000
+[  158.925895] RIP: 0010:[<ffffffff81166ae5>]  [<ffffffff81166ae5>] mmap_region+0x3d5/0x5d0
+[  158.925895] RSP: 0018:ffff88000d111df0  EFLAGS: 00010246
+[  158.925895] RAX: 0000000000000000 RBX: ffff88000dac30e8 RCX: 0000000000000020
+[  158.925895] RDX: ffffffffffffffe0 RSI: ffff88000daabc38 RDI: ffff88000db642a8
+[  158.925895] RBP: fffe88000d111e60 R08: 000000000001b0e0 R09: ffffffffa0111302
+[  158.925895] R10: 0000000000800001 R11: ffff88000d48c000 R12: 00007f02d2221000
+[  158.925895] R13: ffff88000dac30d8 R14: ffff88000d995300 R15: ffff88000daab0b8
+[  158.925895] FS:  00007f02d2219740(0000) GS:ffff88000fc00000(0000) knlGS:0000000000000000
+[  158.925895] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  158.925895] CR2: 00007f305920e4f0 CR3: 000000000da44000 CR4: 00000000000006f0
+[  158.925895] Stack:
+[  158.925895]  ffff88000d995300 0000000000000000 0000000000000000 0000000000000000
+[  158.925895]  0000000000000001 00000000000000fb 0000000000000000 ffff88000daabc38
+[  158.925895]  ffff880000013840 0000000000000002 ffff88000d995300 0000000000000001
+[  158.925895] Call Trace:
+[  158.925895]  [<ffffffff81167037>] ? do_mmap_pgoff+0x357/0x3e0
+[  158.925895]  [<ffffffff811514dd>] ? vm_mmap_pgoff+0x8d/0xc0
+[  158.925895]  [<ffffffff8116557e>] ? SyS_mmap_pgoff+0xbe/0x250
+[  158.925895]  [<ffffffff81019872>] ? SyS_mmap+0x22/0x30
+[  158.925895]  [<ffffffff814fac2d>] ? system_call_fastpath+0x1a/0x1f
+[  158.925895] Code: 00 00 48 89 45 c0 0f 85 8b 01 00 00 f0 49 ff 46 38 4d 89 b1 a0 00 00 00 49 8b 46 28 4c 89 ce 4c 89 4d c8 4c 89 f7 ff 50 50 85 c0 <4c> 8b 4d c8 0f 85 9f 00 00 00 49 8b 01 49 39 c4 0f 85 45 01 00 
+[  158.925895] RIP  [<ffffffff81166ae5>] mmap_region+0x3d5/0x5d0
+[  158.925895]  RSP <ffff88000d111df0>
+[  158.959911] ---[ end trace 1a3630628cf527ad ]---
+[  158.960599] note: fstest[986] exited with preempt_count 1
+[  158.961507] BUG: scheduling while atomic: fstest/986/0x00000002
+[  158.962801] Modules linked in: kernelinjector(O) cirrus 8139too evdev 8139cp ttm drm_kms_helper drm syscopyarea sysfillrect sysimgblt psmouse i2c_core pcspkr i6300esb serio_raw mii microcode intel_agp intel_gtt ext4 crc16 mbcache jbd2 sr_mod cdrom sd_mod ata_generic pata_acpi virtio_balloon ata_piix uhci_hcd libata usbcore virtio_pci usb_common virtio_ring scsi_mod virtio
+[  158.971295] CPU: 0 PID: 986 Comm: fstest Tainted: G      D    O 3.12.7-2-ARCH #1
+[  158.972575] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  158.973803]  ffff88000fc144c0 ffff88000fc04c00 ffffffff814ec113 ffff88000d96bcd0
+[  158.975419]  ffff88000fc04c10 ffffffff814e96bd ffff88000fc04d18 ffffffff814f16b1
+[  158.977066]  00000000000144c0 ffff88000d111fd8 ffff88000d111fd8 00000000000144c0
+[  158.978571] Call Trace:
+[  158.979172]  <#SS>  [<ffffffff814ec113>] dump_stack+0x54/0x8d
+[  158.980580]  [<ffffffff814e96bd>] __schedule_bug+0x4d/0x5b
+[  158.981301]  [<ffffffff814f16b1>] __schedule+0x951/0x960
+[  158.982010]  [<ffffffff8136ffb7>] ? serial8250_console_putchar+0x27/0x30
+[  158.982891]  [<ffffffff8136ff90>] ? serial8250_console_write+0x140/0x140
+[  158.983785]  [<ffffffff8136fdeb>] ? wait_for_xmitr+0x3b/0xa0
+[  158.984518]  [<ffffffff814f2ce6>] ? _raw_spin_unlock+0x36/0x40
+[  158.985271]  [<ffffffff81123f35>] ? irq_work_queue+0xe5/0xf0
+[  158.986009]  [<ffffffff814f16e9>] schedule+0x29/0x70
+[  158.986656]  [<ffffffff814f2445>] rwsem_down_read_failed+0xc5/0x120
+[  158.987480]  [<ffffffff8129c684>] call_rwsem_down_read_failed+0x14/0x30
+[  158.988338]  [<ffffffff814f0657>] ? down_read+0x17/0x20
+[  158.989033]  [<ffffffff810d4bcb>] acct_collect+0x4b/0x1b0
+[  158.989700]  [<ffffffff810645d6>] do_exit+0x866/0xab0
+[  158.990341]  [<ffffffff810b4d61>] ? kmsg_dump+0xc1/0xd0
+[  158.991136]  [<ffffffff814f44d1>] oops_end+0xa1/0xe0
+[  158.991757]  [<ffffffff810182bb>] die+0x4b/0x70
+[  158.992329]  [<ffffffff814f3de0>] do_trap+0x60/0x170
+[  158.992947]  [<ffffffff8101577b>] do_stack_segment+0x7b/0xb0
+[  158.993665]  [<ffffffff814f3898>] stack_segment+0x28/0x30
+[  158.994348]  [<ffffffffa0111302>] ? jbd2_journal_stop+0x212/0x3f0 [jbd2]
+[  158.995178]  [<ffffffff81166ae5>] ? mmap_region+0x3d5/0x5d0
+[  158.995877]  <<EOE>>  [<ffffffff81167037>] ? do_mmap_pgoff+0x357/0x3e0
+[  158.996727]  [<ffffffff811514dd>] ? vm_mmap_pgoff+0x8d/0xc0
+[  158.997419]  [<ffffffff8116557e>] ? SyS_mmap_pgoff+0xbe/0x250
+[  158.998614]  [<ffffffff81019872>] ? SyS_mmap+0x22/0x30
+[  158.999272]  [<ffffffff814fac2d>] ? system_call_fastpath+0x1a/0x1f

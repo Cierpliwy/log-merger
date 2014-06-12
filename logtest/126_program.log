@@ -1,0 +1,7 @@
+[INTERNAL] Msg: 72B, Injection: TRIGGER ext4_file_mmap REGS MAX_INJECTIONS 1 SEED 4980849150503708485, Retries: 3
+[simple.tst] Test started
+[simple.tst] Test finished
+[simple.tst] Check started
+[simple.tst] Check finished
+[simple.tst] TEST SUCCESSFUL
+[INTERNAL] Closing test: simple.tst... OK
