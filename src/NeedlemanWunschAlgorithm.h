@@ -24,7 +24,7 @@ public:
         return m_score;
     }
 
-private:
+protected:
 
     void free();
     void insertTokenInGraph(TokenGraph &graph, unsigned i,

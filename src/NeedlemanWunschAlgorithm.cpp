@@ -73,13 +73,14 @@ bool NeedlemanWunschAlgorithm::calculate(const File &file1, const File &file2)
     float maxScore = getMaximalScore(file1);
 
     // Starting penalty
-    for (int x = 0; x < f1num + 1; ++x) {
-        int lastPenalty = min(m_settings.basePenalty + x*m_settings.penaltyReduction, m_settings.minPenalty);
-        m_tab[x][0] = Cell(lastPenalty, lastPenalty, -1, 0);
+    m_tab[0][0] = Cell();
+    for (int x = 1; x < f1num + 1; ++x) {
+        int lastPenalty = min(m_settings.basePenalty + (x-1)*m_settings.penaltyReduction, m_settings.minPenalty);
+        m_tab[x][0] = Cell(m_tab[x-1][0].score + lastPenalty, lastPenalty, -1, 0);
     }
-    for (int y = 0; y < f2num + 1; ++y) {
-        int lastPenalty = min(m_settings.basePenalty + y*m_settings.penaltyReduction, m_settings.minPenalty);
-        m_tab[0][y] = Cell(lastPenalty, lastPenalty, 0, -1);
+    for (int y = 1; y < f2num + 1; ++y) {
+        int lastPenalty = min(m_settings.basePenalty + (y-1)*m_settings.penaltyReduction, m_settings.minPenalty);
+        m_tab[0][y] = Cell(lastPenalty + m_tab[0][y-1].score, lastPenalty, 0, -1);
     }
 
     // Calculate each remaining cell

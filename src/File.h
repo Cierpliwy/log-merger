@@ -18,6 +18,7 @@ public:
     ~File();
 
     bool load(const std::string& filePath);
+    bool loadFromString(const std::string &fileName, const std::string &content);
     void tokenize();
 
     const std::string& getName() const {
@@ -44,7 +45,7 @@ public:
         return m_id;
     }
 
-private:
+protected:
 
     bool isTokenCompleted(char c);
     void addToToken(char c);

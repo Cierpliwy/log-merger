@@ -19,6 +19,14 @@ bool File::load(const std::string &filePath)
     return false;
 }
 
+bool File::loadFromString(const std::string &fileName, const std::string &content)
+{
+    m_data = content;
+    m_name = fileName;
+    m_id = m_fileHelper.registerFile(*this);
+    return true;
+}
+
 File::~File()
 {
     m_fileHelper.unregisterFile(*this);
